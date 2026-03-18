@@ -36,6 +36,50 @@ header {
   padding: 0.5rem;
 }
 
+.cart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cart-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  font-weight: 600;
+}
+
+.cart-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  background: #e63946;
+  /* red badge */
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+  min-width: 18px;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.cart-badge:empty {
+  display: none;
+}
+
 p {
   padding: 0.75rem;
 }
@@ -90,7 +134,7 @@ p {
   margin-top: -1.3em;
 }
 
-.logo--square > div {
+.logo--square>div {
   margin-top: -1.7em;
 }
 
@@ -129,6 +173,10 @@ button {
 
 .cart:hover svg {
   fill: gray;
+}
+
+.hide {
+  display: none;
 }
 
 /* End cart icon styles */
