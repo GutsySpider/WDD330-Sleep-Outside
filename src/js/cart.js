@@ -1,24 +1,31 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, loadHeaderFooter } from "./utils.mjs";
 import updateCartCount from "./cartCount.mjs";
 
 document.addEventListener("DOMContentLoaded", () => {
   updateCartCount();
 });
 
+loadHeaderFooter();
+
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart") || [];
 
+  // If the cart is empty, show a message and stop
+  if (cartItems.length === 0) {
+    document.querySelector(".product-list").innerHTML = `No Items in Cart`;
+    return;
+  }
+
+  // Otherwise, render the items
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
-
-  displayCartTotal(cartItems);
 }
 
 function cartItemTemplate(item) {
   const newItem = `<li class="cart-card divider">
   <a href="#" class="cart-card__image">
     <img
-      src="${item.Image}"
+      src="${item.Images.PrimaryMedium}"
       alt="${item.Name}"
     />
   </a>
@@ -49,5 +56,7 @@ function displayCartTotal(cartItems) {
     cartTotal.innerHTML = `Total: $${total.toFixed(2)}`;
   }
 }
+
+displayCartTotal();
 
 renderCartContents();
