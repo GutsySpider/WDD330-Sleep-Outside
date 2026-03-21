@@ -199,6 +199,17 @@ button {
   text-align: center;
 }
 
+.product-grid {
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.product-grid li {
+  list-style: none;
+  text-align: center;
+}
+
 .products {
   margin-top: 2rem;
   padding: 1rem;

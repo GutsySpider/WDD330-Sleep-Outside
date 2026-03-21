@@ -25,7 +25,9 @@ export default class ProductList {
   async init() {
     const list = await this.dataSource.getData(this.category);
     this.renderList(list);
-    document.querySelector(".title").textContent = this.category;
+    document.querySelector(".title").textContent = this.category.toLowerCase().replace(/\b[a-z]/g, function (letter) {
+      return letter.toUpperCase();
+    });
   }
 
   renderList(list) {
