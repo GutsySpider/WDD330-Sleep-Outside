@@ -138,6 +138,115 @@ p {
   margin-top: -1.7em;
 }
 
+.checkout-btn {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background: #2a6fdb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.checkout-btn:hover {
+  background: #1f56ad;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 40px 20px;
+}
+.empty-cart h3 {
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+.shop-now-btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 18px;
+  background: #2a6fdb;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.shop-now-btn:hover {
+  background: #1f56ad;
+}
+
+.checkout {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.summary p {
+  margin: 6px 0;
+}
+.place-order-btn {
+  margin-top: 25px;
+  padding: 14px 22px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.place-order-btn:hover {
+  background: #1f7f34;
+}
+
+.confirmation {
+  text-align: center;
+  padding: 40px 20px;
+}
+.back-home-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 18px;
+  background: #2a6fdb;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.back-home-btn:hover {
+  background: #1f56ad;
+}
+
+button,
+.checkout-btn,
+.place-order-btn,
+.shop-now-btn,
+.back-home-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #2a6fdb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+button:hover,
+.checkout-btn:hover,
+.place-order-btn:hover,
+.shop-now-btn:hover,
+.back-home-btn:hover {
+  background: #1f56ad;
+  transform: translateY(-2px);
+}
+
+button:active,
+.checkout-btn:active,
+.place-order-btn:active,
+.shop-now-btn:active,
+.back-home-btn:active {
+  background: #17407f;
+  transform: translateY(0);
+}
+
 /* utility classes */
 .highlight {
   color: var(--tertiary-color);

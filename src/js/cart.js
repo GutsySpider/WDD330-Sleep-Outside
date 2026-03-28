@@ -1,4 +1,4 @@
-import { getLocalStorage, loadHeaderFooter } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, loadHeaderFooter } from "./utils.mjs";
 import updateCartCount from "./cartCount.mjs";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -7,57 +7,102 @@ document.addEventListener("DOMContentLoaded", () => {
 
 loadHeaderFooter();
 
-function renderCartContents() {
-  const cartItems = getLocalStorage("so-cart") || [];
+let cartItems = getLocalStorage("so-cart") || [];
 
-  // If the cart is empty, show a message and stop
+renderCartContents(cartItems);
+setupCheckoutButton();
+
+function renderCartContents(cartItems) {
+  const list = document.querySelector(".product-list");
+
   if (cartItems.length === 0) {
-    document.querySelector(".product-list").innerHTML = `No Items in Cart`;
+    list.innerHTML = `
+      <li class="empty-cart">
+        <h3>Your cart is empty</h3>
+        <p>Looks like you haven’t added anything yet.</p>
+        <a href="/index.html" class="shop-now-btn">Shop Now</a>
+      </li>
+    `;
     return;
   }
 
-  // Otherwise, render the items
-  const htmlItems = cartItems.map((item) => cartItemTemplate(item));
-  document.querySelector(".product-list").innerHTML = htmlItems.join("");
+  const htmlItems = cartItems.map((item, index) =>
+    cartItemTemplate(item, index)
+  );
+
+  list.innerHTML = htmlItems.join("");
+
+  attachEventListeners();
 }
 
-function cartItemTemplate(item) {
+function cartItemTemplate(item, index) {
   const imageSrc = item.Images?.PrimaryMedium || item.Image;
-  const newItem = `<li class="cart-card divider">
-  <a href="#" class="cart-card__image">
-    <img
-      src="${imageSrc}"
-      alt="${item.Name}"
-    />
-  </a>
-  <a href="#">
-    <h2 class="card__name">${item.Name}</h2>
-  </a>
-  <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
-  <p class="cart-card__price">$${item.FinalPrice}</p>
-</li>`;
+  const quantity = item.quantity || 1;
+  const subtotal = item.FinalPrice * quantity;
 
-  return newItem;
+  return `
+    <li class="cart-card divider">
+      <img src="${imageSrc}" alt="${item.Name}" class="cart-card__image" />
+
+      <div class="cart-card__details">
+        <h2 class="card__name">${item.Name}</h2>
+        <p class="cart-card__color">${item.Colors[0].ColorName}</p>
+
+        <div class="cart-card__qty">
+          <label>Qty:</label>
+          <input type="number" min="1" value="${quantity}" data-index="${index}" class="qty-input" />
+        </div>
+
+        <p class="cart-card__price">$${item.FinalPrice.toFixed(2)}</p>
+        <p class="cart-card__subtotal">Subtotal: $${subtotal.toFixed(2)}</p>
+
+        <button class="remove-item" data-index="${index}">Remove</button>
+      </div>
+    </li>
+  `;
 }
 
-function displayCartTotal(cartItems) {
-  if (cartItems && cartItems.length > 0) {
-    const cartFooter = document.querySelector(".cart-footer");
-    const cartTotal = document.querySelector(".cart-total");
+function attachEventListeners() {
+  document.querySelectorAll(".qty-input").forEach((input) => {
+    input.addEventListener("change", updateQuantity);
+  });
 
-    cartFooter.classList.remove("hide");
+  document.querySelectorAll(".remove-item").forEach((btn) => {
+    btn.addEventListener("click", removeItem);
+  });
+}
 
-    let total = 0;
+function updateQuantity(e) {
+  const index = e.target.dataset.index;
+  const newQty = parseInt(e.target.value);
 
-    cartItems.forEach((item) => {
-      total += item.FinalPrice;
-    });
-
-    cartTotal.innerHTML = `Total: $${total.toFixed(2)}`;
+  if (isNaN(newQty) || newQty < 1) {
+    e.target.value = cartItems[index].quantity || 1;
+    return;
   }
+
+  cartItems[index].quantity = newQty;
+  setLocalStorage("so-cart", cartItems);
+
+  renderCartContents(cartItems);
+  updateCartCount();
 }
 
-displayCartTotal();
+function removeItem(e) {
+  const index = e.target.dataset.index;
 
-renderCartContents();
+  cartItems.splice(index, 1);
+  setLocalStorage("so-cart", cartItems);
+
+  renderCartContents(cartItems);
+  updateCartCount();
+}
+
+function setupCheckoutButton() {
+  const btn = document.querySelector(".checkout-btn");
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    window.location.href = "/checkout/index.html";
+  });
+}
